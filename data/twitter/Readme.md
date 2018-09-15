@@ -1,6 +1,6 @@
 # Twitter Crawling Data (2009~2017) 
 
-지역별 트위터 크롤링하기 코드는 (여기)[]를 참고하세요
+지역별 트위터 크롤링하기 코드는 [여기](https://github.com/dataitgirls2/Next_Hip_Place/blob/master/code/twit_crawling/twitter_crawling_permonth.ipynb)를 참고하세요
 
 2009 년부터 2017년 까지 서울의 **핫플레이스 / 한 때흥했던 곳 / 안 흥하는 곳** 을 나눠 각 키워드 별 트윗 수를 크롤링 했습니다.
 
