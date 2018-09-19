@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Leaflet sample</title>
+      <link rel = "stylesheet" href = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css"/>
+      <script src = "http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+      <style>
+      .info {
+          padding: 6px 8px;
+          font: 14px/16px Arial, Helvetica, sans-serif;
+          background: white;
+          background: rgba(255,255,255,0.8);
+          box-shadow: 0 0 15px rgba(0,0,0,0.2);
+          border-radius: 5px;
+      }
+      .info h4 {
+          margin: 0 0 5px;
+          color: #777;
+      }
+      </style>
+   </head>
+
+   <body>
+     <input type="checkbox" name="vehicle1" value="too_calm"> 아파트나 업무지역이 많은 지역<br>
+     <input type="checkbox" name="vehicle2" value="already_hot"> 근린시설의 비중이 높은 지역<br>
+     <input type="checkbox" name="vehicle3" value="candidate" checked> 핫플 후보지<br><br>
+      <div id = "map" style = "width: 1000px; height: 580px"></div>
+
+      <script type="text/javascript" src="geojson.js"></script>
+      <script>
+         // Creating map options
+         var mapOptions = {
+            center: [37.5665, 126.9780],
+            zoom: 10
+         }
+
+         // Creating a map object
+         var map = new L.map('map', mapOptions);
+
+         // Creating a Layer object
+         var layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+
+         // Adding layer to the map
+         layer.addTo(map)
+
+         function getColor(d) {
+             return d == 2 ? '#800026' :
+                    d == 1 ? '#FC4E2A' :
+                    d == 0   ? '#FED976' :
+                               '#FFEDA0';
+         }
+         function style(feature) {
+             return {
+                 fillColor: getColor(feature.properties.class),
+                 weight: 1,
+                 opacity: 1,
+                 color: 'white',
+                 dashArray: '3',
+                 fillOpacity: 0.7
+             };
+         }
+
+         function highlightFeature(e) {
+             var layer = e.target;
+
+             layer.setStyle({
+                 weight: 1,
+                 color: '#666',
+                 dashArray: '',
+                 fillOpacity: 0.7
+             });
+
+             if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
+                 layer.bringToFront();
+             }
+             info.update(layer.feature.properties);
+         }
+         function resetHighlight(e) {
+             geojson.resetStyle(e.target);
+             info.update();
+         }
+         function zoomToFeature(e) {
+             map.fitBounds(e.target.getBounds());
+         }
+         function onEachFeature(feature, layer) {
+             layer.on({
+                 mouseover: highlightFeature,
+                 mouseout: resetHighlight,
+                 click: zoomToFeature
+             });
+         }
+
+         var geojson;
+         geojson = L.geoJson(statesData, {
+           style: style,
+           onEachFeature: onEachFeature
+       }).addTo(map);
+
+       var info = L.control();
+
+       info.onAdd = function (map) {
+           this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+           this.update();
+           return this._div;
+       };
+
+       // method that we will use to update the control based on feature properties passed
+       info.update = function (props) {
+           this._div.innerHTML = '<h4>기준시가</h4>' +  (props ?
+               '<b>' + props.area_name + '</b><br />' + props.class
+               : 'Hover over a state');
+       };
+       info.addTo(map);
+
+       // info.addTo(map);
+      </script>
+   </body>
+
+</html>
