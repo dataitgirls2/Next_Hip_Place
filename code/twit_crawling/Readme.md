@@ -55,4 +55,4 @@ chrome은 느리다는 말이 있어서 firefox를 이용했고 geckodriver로 �
 
       해결방안: 위 문구가 나타나면 **트윗수(Frequency)**를 **-1**로 저장하도록 함
 
-   2. 다음 날짜로 넘어갈 때 오류가 나서 datetime.timedelta대신 relativedelta 라이브러리 사용
+2. 다음 날짜로 넘어갈 때 오류가 나서 datetime.timedelta대신 relativedelta 라이브러리 사용
